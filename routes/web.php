@@ -17,5 +17,17 @@ Route::middleware('guest')->group(function () {
 });
 
 
-Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth')->name('logout');
+Route::middleware(['auth'])->group(function () {
+
+    //% Recipes
+    Route::name('recipes.')->group(function () {
+        Route::get('/recipes/create', [RecipeController::class, 'create'])->name('create');
+        Route::post('/recipes', [RecipeController::class, 'store'])->name('store');
+    });
+
+    Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
+});
+
+
+
 

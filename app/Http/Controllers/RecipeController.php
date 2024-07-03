@@ -26,7 +26,8 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('recipes.create', compact('categories'));
     }
 
     /**
@@ -34,7 +35,27 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = auth()->user();
+
+        $data = $request->validate([
+            'recipe_name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'ingredients' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'nullable'
+        ]);
+
+        // Handle image upload if present
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('images', 'public');
+        }
+
+        $recipe = new Recipe($data);
+        $recipe->user()->associate($user);
+        $recipe->category()->associate(Category::find($data['category_id']));
+        $recipe->save();
+
+        return to_route('recipes.index');
     }
 
     /**

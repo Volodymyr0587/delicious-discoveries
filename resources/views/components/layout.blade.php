@@ -30,10 +30,10 @@
 
             <nav>
                 <ul class="flex items-center justify-between font-bold text-sm text-white uppercase no-underline">
-                    <li><a class="hover:text-gray-200 hover:underline px-4" href="#">Shop</a></li>
+                    <li><a class="hover:text-gray-200 hover:underline px-4" href="/">Головна</a></li>
                     <li><a class="hover:text-gray-200 hover:underline px-4" href="#">About</a></li>
                     @auth
-                    <li><a class="hover:text-gray-200 hover:underline px-4" href="#">Створити рецепт</a></li>
+                    <li><a class="hover:text-gray-200 hover:underline px-4" href="{{ route('recipes.create') }}">Створити рецепт</a></li>
                     @endauth
                 </ul>
             </nav>
@@ -93,5 +93,17 @@
 
     {{ $slot }}
 
+
+    <footer class="w-full border-t bg-white pb-12 mt-20">
+        <div class="w-full container mx-auto flex flex-col items-center">
+            <div class="flex flex-col md:flex-row text-center md:text-left md:justify-between py-6">
+                <a href="#" class="uppercase px-3">Про нас</a>
+                <a href="#" class="uppercase px-3">Політика конфіденційності</a>
+                <a href="#" class="uppercase px-3">Правила та умови</a>
+                <a href="#" class="uppercase px-3">Зв'яжіться з нами</a>
+            </div>
+            <div class="uppercase pb-6">&copy; delicious-discoveries.com</div>
+        </div>
+    </footer>
 </body>
 </html>

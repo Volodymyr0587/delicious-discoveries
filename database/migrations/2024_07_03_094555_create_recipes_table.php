@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Category::class);
             $table->string('recipe_name');
-            $table->string('ingredients');
+            $table->text('ingredients');
             $table->text('description');
             $table->string('image')->nullable();
             $table->timestamps();
