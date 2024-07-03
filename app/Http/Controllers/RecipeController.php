@@ -45,6 +45,8 @@ class RecipeController extends Controller
             'image' => 'nullable'
         ]);
 
+        $request->ingredients = str($request->ingredients)->squish();
+
         // Handle image upload if present
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('images', 'public');
