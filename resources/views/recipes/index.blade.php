@@ -14,7 +14,7 @@
             <article class="flex flex-col shadow my-4">
                 <!-- Recipes Image -->
                 <a href="#" class="hover:opacity-75">
-                    <img src="{{$recipe->image ? asset('storage/' . $recipe->image) : asset('food.jpg') }}">
+                    <img src="{{$recipe->image ? asset('storage/' . $recipe->image) : asset('images/food.jpg') }}">
                 </a>
                 <div class="bg-white flex flex-col justify-start p-6">
                     <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">Technology</a>
