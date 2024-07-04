@@ -55,9 +55,9 @@
     <!-- Text Header -->
     <div class="w-full container mx-auto">
         <div class="flex flex-col items-center py-12">
-            <a class="font-bold text-gray-800 uppercase hover:text-gray-700 text-5xl" href="{{ route('recipes.index') }}">
+            <h1 class="font-bold text-neutral-800 uppercase text-5xl">
                 Смачні відкриття
-            </a>
+            </h1>
             <p class="text-lg text-gray-600 mb-4">
                 Кухонні хроніки
             </p>
