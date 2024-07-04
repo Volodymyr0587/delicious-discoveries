@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Recipe extends Model
 {
@@ -35,5 +36,16 @@ class Recipe extends Model
         }
 
         return $query;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($recipe) {
+            if ($recipe->image) {
+                Storage::disk('public')->delete($recipe->image);
+            }
+        });
     }
 }

@@ -42,10 +42,10 @@ class RecipeController extends Controller
             'category_id' => 'required|exists:categories,id',
             'ingredients' => 'required|string',
             'description' => 'required|string',
-            'image' => 'nullable'
+            'image' => 'nullable|image'
         ]);
 
-        $request->ingredients = str($request->ingredients)->squish();
+        $data['ingredients'] = str($request->ingredients)->squish();
 
         // Handle image upload if present
         if ($request->hasFile('image')) {
@@ -57,7 +57,7 @@ class RecipeController extends Controller
         $recipe->category()->associate(Category::find($data['category_id']));
         $recipe->save();
 
-        return to_route('recipes.index');
+        return to_route('recipes.index')->with('success', 'Recipe created successfully.');
     }
 
     /**
@@ -73,7 +73,8 @@ class RecipeController extends Controller
      */
     public function edit(Recipe $recipe)
     {
-        //
+        $categories = Category::all();
+        return view('recipes.edit', compact('recipe', 'categories'));
     }
 
     /**
@@ -81,7 +82,28 @@ class RecipeController extends Controller
      */
     public function update(Request $request, Recipe $recipe)
     {
-        //
+        $data = $request->validate([
+            'recipe_name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'ingredients' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'nullable|image'
+        ]);
+
+        $data['ingredients'] = str($request->ingredients)->squish();
+
+        // Handle image upload if present
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('images', 'public');
+        } else {
+            unset($data['image']);
+        }
+
+        $recipe->update($data);
+        $recipe->category()->associate(Category::find($data['category_id']));
+        $recipe->save();
+
+        return to_route('recipes.show', $recipe)->with('success', 'Recipe updated successfully.');
     }
 
     /**
@@ -89,6 +111,8 @@ class RecipeController extends Controller
      */
     public function destroy(Recipe $recipe)
     {
-        //
+        $recipe->delete();
+
+        return redirect()->route('recipes.index')->with('success', 'Recipe deleted successfully.');
     }
 }
