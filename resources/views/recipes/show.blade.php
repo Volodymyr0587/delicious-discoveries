@@ -1,7 +1,7 @@
 <x-layout>
 
     <x-slot:heading>
-        <h2 class="text-2xl">{{ $recipe->recipe_name }}</h2>
+        <h2 class="text-2xl uppercase font-bold">{{ $recipe->recipe_name }}</h2>
     </x-slot:heading>
 
 
@@ -17,7 +17,7 @@
 
             <div class="bg-white flex flex-col justify-start p-6">
                 <a href="{{ route('recipes.index', ['category_id' => $recipe->category->id]) }}" class="text-blue-700 text-sm font-bold uppercase pb-4">{{ $recipe->category->category_name }}</a>
-                <p class="text-3xl font-bold pb-4">{{ $recipe->recipe_name }}</p>
+                <p class="text-3xl font-bold pb-4 first-letter:text-7xl capitalize">{{ $recipe->recipe_name }}</p>
                 <p class="text-sm pb-8">
                     Від <a href="{{ route('user.recipes', $recipe->user) }}" class="font-semibold hover:text-gray-800">{{ $recipe->user->name }}</a>, Створено {{ $recipe->created_at->locale('uk')->diffForHumans() }}
                     @can('edit', $recipe)
