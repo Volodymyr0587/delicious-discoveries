@@ -19,7 +19,7 @@
                 <a href="{{ route('recipes.index', ['category_id' => $recipe->category->id]) }}" class="text-blue-700 text-sm font-bold uppercase pb-4">{{ $recipe->category->category_name }}</a>
                 <p class="text-3xl font-bold pb-4">{{ $recipe->recipe_name }}</p>
                 <p class="text-sm pb-8">
-                    Від <a href="#" class="font-semibold hover:text-gray-800">{{ $recipe->user->name }}</a>, Створено {{ $recipe->created_at->diffForHumans() }}
+                    Від <a href="#" class="font-semibold hover:text-gray-800">{{ $recipe->user->name }}</a>, Створено {{ $recipe->created_at->locale('uk')->diffForHumans() }}
                     @can('edit', $recipe)
                     <a href="{{ route('recipes.edit', $recipe) }}" class="mt-2 text-sm text-blue-500 font-semibold hover:underline">Редагувати рецепт</a>
                     @endcan
