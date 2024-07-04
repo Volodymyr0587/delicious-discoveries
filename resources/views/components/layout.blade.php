@@ -25,58 +25,35 @@
 <body class="bg-white font-family-karla">
 
     <!-- Top Bar Nav -->
-    <nav class="w-full py-4 bg-blue-800 shadow">
-        <div class="w-full container mx-auto flex flex-wrap items-center justify-between">
-
-            <nav>
-                <ul class="flex items-center justify-between font-bold text-sm text-white uppercase no-underline">
-                    <li><a class="hover:text-gray-200 hover:underline px-4" href="/">Головна</a></li>
-                    <li><a class="hover:text-gray-200 hover:underline px-4" href="#">About</a></li>
-                    @auth
-                    <li><a class="hover:text-gray-200 hover:underline px-4" href="{{ route('recipes.create') }}">Створити рецепт</a></li>
-                    @endauth
-                </ul>
-            </nav>
-
-            <div class="flex items-center text-lg no-underline text-white pr-6">
-
-                @auth()
-                <span class="pl-6 font-bold">
-                    {{ auth()->user()->name }}
-                </span>
-                <form class="pl-6" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="hover:underline">Вийти</button>
-                </form>
-                @else
-                <a class="" href="{{ route('login') }}">
-                    Увійти
-                </a>
-
-                <a class="pl-6" href="{{ route('register') }}">
-                    Зареєструватись
-                </a>
+    <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white text-sm py-4 dark:bg-neutral-800">
+        <nav class="max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between" aria-label="Global">
+            <div class="w-full flex flex-col md:flex-row md:space-x-4">
+                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" href="/">Головна</a>
+                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" href="#">Про нас</a>
+                @auth
+                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" href="{{ route('recipes.create') }}">Створити рецепт</a>
                 @endauth
-
-                <a class="pl-6" href="#">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a class="pl-6" href="#">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a class="pl-6" href="#">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a class="pl-6" href="#">
-                    <i class="fab fa-linkedin"></i>
-                </a>
             </div>
-        </div>
 
-    </nav>
+
+          <div class="flex flex-row items-center gap-5 mt-5 sm:justify-end sm:mt-0 sm:ps-5">
+            @auth
+                <span class="flex-none text-xl font-bold dark:text-white">{{ auth()->user()->name }}</span>
+
+                <form class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit">Вийти</button>
+                </form>
+            @else
+                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" href="{{ route('login') }}">Увійти</a>
+                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" href="{{ route('register') }}">Зареєструватись</a>
+            @endauth
+          </div>
+        </nav>
+      </header>
 
     <!-- Text Header -->
-    <header class="w-full container mx-auto">
+    <div class="w-full container mx-auto">
         <div class="flex flex-col items-center py-12">
             <a class="font-bold text-gray-800 uppercase hover:text-gray-700 text-5xl" href="{{ route('recipes.index') }}">
                 Смачні відкриття
@@ -89,7 +66,7 @@
             {{ $heading }}
             @endisset
         </div>
-    </header>
+    </div>
 
     {{ $slot }}
 
