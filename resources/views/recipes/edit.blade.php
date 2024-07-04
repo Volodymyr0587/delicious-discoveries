@@ -71,11 +71,12 @@
     </form>
 
     <!-- Delete Button Form -->
+    @can('edit', $recipe)
     <form action="{{ route('recipes.destroy', $recipe) }}" method="POST" class="max-w-4xl mx-auto px-8 mt-6">
         @csrf
         @method('DELETE')
         <button type="submit" onclick="return confirm('Ви впевнені, що хочете видалити цей рецепт?');"
         class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Видалити</button>
     </form>
-
+    @endcan
 </x-layout>

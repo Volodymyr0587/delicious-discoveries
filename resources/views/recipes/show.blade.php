@@ -20,7 +20,9 @@
                 <p class="text-3xl font-bold pb-4">{{ $recipe->recipe_name }}</p>
                 <p class="text-sm pb-8">
                     Від <a href="#" class="font-semibold hover:text-gray-800">{{ $recipe->user->name }}</a>, Створено {{ $recipe->created_at->diffForHumans() }}
+                    @can('edit', $recipe)
                     <a href="{{ route('recipes.edit', $recipe) }}" class="mt-2 text-sm text-blue-500 font-semibold hover:underline">Редагувати рецепт</a>
+                    @endcan
                 </p>
                 <h1 class="text-2xl font-bold pb-3">Інгредієнти</h1>
                 <p class="pb-3">
