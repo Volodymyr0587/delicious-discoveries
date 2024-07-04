@@ -15,7 +15,7 @@ class RecipeController extends Controller
     {
         $category_id = $request->input('category_id');
 
-        $recipes = Recipe::ofCategory($category_id)->get();
+        $recipes = Recipe::ofCategory($category_id)->paginate(3);
         $categories = Category::all();
 
         return view('recipes.index', compact('recipes', 'categories', 'category_id'));
