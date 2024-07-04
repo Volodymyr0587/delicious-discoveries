@@ -28,10 +28,10 @@
     <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white text-sm py-4 dark:bg-neutral-800">
         <nav class="max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between" aria-label="Global">
             <div class="w-full flex flex-col md:flex-row md:space-x-4">
-                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" href="/">Головна</a>
+                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500 {{ request()->routeIs('recipes.index') ? 'underline underline-offset-8' : ''  }}" href="{{ route('recipes.index') }}">Головна</a>
                 <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" href="#">Про нас</a>
                 @auth
-                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" href="{{ route('recipes.create') }}">Створити рецепт</a>
+                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500 {{ request()->routeIs('recipes.create') ? 'underline underline-offset-8' : ''  }}" href="{{ route('recipes.create') }}">Створити рецепт</a>
                 @endauth
             </div>
 
@@ -45,8 +45,8 @@
                     <button type="submit">Вийти</button>
                 </form>
             @else
-                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" href="{{ route('login') }}">Увійти</a>
-                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" href="{{ route('register') }}">Зареєструватись</a>
+                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500 {{ request()->routeIs('login') ? 'underline underline-offset-8' : ''  }}" href="{{ route('login') }}">Увійти</a>
+                <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500 {{ request()->routeIs('register') ? 'underline underline-offset-8' : ''  }}" href="{{ route('register') }}">Зареєструватись</a>
             @endauth
           </div>
         </nav>
