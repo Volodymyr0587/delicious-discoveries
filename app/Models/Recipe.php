@@ -31,11 +31,12 @@ class Recipe extends Model
 
     public function scopeOfCategory($query, $categoryId)
     {
-        if ($categoryId) {
-            return $query->where('category_id', $categoryId);
-        }
+        return $categoryId ? $query->where('category_id', $categoryId) : $query;
+    }
 
-        return $query;
+    public function scopeOfUser($query, $userId)
+    {
+        return $userId ? $query->where('user_id', $userId) : $query;
     }
 
     protected static function boot()

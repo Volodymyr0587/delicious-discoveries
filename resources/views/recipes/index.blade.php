@@ -20,14 +20,13 @@
                     <a href="{{ route('recipes.index', ['category_id' => $recipe->category->id]) }}" class="text-blue-700 text-sm font-bold uppercase pb-4">{{ $recipe->category->category_name }}</a>
                     <a href="{{ route('recipes.show', $recipe) }}" class="text-3xl font-bold hover:text-gray-700 pb-4">{{ $recipe->recipe_name }}</a>
                     <p href="#" class="text-sm pb-3">
-                        Від <a href="#" class="font-semibold hover:text-gray-800">{{ $recipe->user->name }}</a>,
+                        Від <a href="{{ route('user.recipes', $recipe->user) }}" class="font-semibold hover:text-gray-800">{{ $recipe->user->name }}</a>,
                         Створено {{ $recipe->created_at->locale('uk')->diffForHumans() }}
                     </p>
-                    <a href="#" class="pb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis porta
-                        dui. Ut eu iaculis massa. Sed ornare ligula lacus, quis iaculis dui porta volutpat. In sit amet
-                        posuere magna..</a>
-                    <a href="#" class="uppercase text-gray-800 hover:text-black">Continue Reading <i
-                            class="fas fa-arrow-right"></i></a>
+                    <a href="{{ route('recipes.show', $recipe) }}" class="pb-6">{{ Str::limit($recipe->description, 40) }}</a>
+                    <a href="{{ route('recipes.show', $recipe) }}" class="uppercase text-gray-800 hover:text-black">Продовжити читати
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </article>
             @empty

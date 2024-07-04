@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Recipe;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -115,4 +116,17 @@ class RecipeController extends Controller
 
         return redirect()->route('recipes.index')->with('success', 'Recipe deleted successfully.');
     }
+
+
+    public function userRecipes(User $user, Request $request)
+    {
+        $category_id = $request->input('category_id');
+        $categories = Category::all();
+        $recipes = Recipe::ofUser($user->id)
+                    ->ofCategory($category_id)
+                    ->paginate(3);
+
+        return view('recipes.index', compact('recipes', 'user', 'categories', 'category_id'));
+    }
+
 }

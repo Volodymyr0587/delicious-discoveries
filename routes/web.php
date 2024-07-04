@@ -7,6 +7,8 @@ use App\Http\Controllers\RegisterUserController;
 
 Route::get('/', [RecipeController::class, 'index'])->name('recipes.index');
 Route::get('/recipes/{recipe}/show', [RecipeController::class, 'show'])->name('recipes.show');
+Route::get('/user/{user}/recipes', [RecipeController::class, 'userRecipes'])->name('user.recipes');
+
 
 Route::middleware('guest')->group(function () {
     //% Auth
