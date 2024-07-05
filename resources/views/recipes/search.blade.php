@@ -1,9 +1,15 @@
 <x-layout>
 
-    <!-- Categories -->
     <x-categories-nav :categories="$categories" :category_id="$category_id" />
 
-    <x-search-bar />
+
+        <x-search-bar />
+
+        @if ($search)
+            <div class="relative max-w-lg mx-auto mt-10">
+                &#127828; Результат пошуку для <span class="font-bold">{{ $search }}</span>
+            </div>
+        @endif
 
     <div class="container mx-auto flex flex-wrap py-6">
 
@@ -38,17 +44,6 @@
             <div class="space-x-8 py-8">
                 {{ $recipes->links() }}
             </div>
-
-            <!-- Pagination -->
-            {{-- <div class="flex items-center py-8">
-                <a href="#"
-                    class="h-10 w-10 bg-blue-800 hover:bg-blue-600 font-semibold text-white text-sm flex items-center justify-center">1</a>
-                <a href="#"
-                    class="h-10 w-10 font-semibold text-gray-800 hover:bg-blue-600 hover:text-white text-sm flex items-center justify-center">2</a>
-                <a href="#"
-                    class="h-10 w-10 font-semibold text-gray-800 hover:text-gray-900 text-sm flex items-center justify-center ml-3">Next
-                    <i class="fas fa-arrow-right ml-2"></i></a>
-            </div> --}}
 
         </section>
 

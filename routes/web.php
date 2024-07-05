@@ -4,11 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\RegisterUserController;
+use App\Http\Controllers\SearchRecipeController;
 
 Route::get('/', [RecipeController::class, 'index'])->name('recipes.index');
 Route::get('/recipes/{recipe}/show', [RecipeController::class, 'show'])->name('recipes.show');
 Route::get('/user/{user}/recipes', [RecipeController::class, 'userRecipes'])->name('user.recipes');
 
+//% Search
+Route::get('/search', SearchRecipeController::class)->name('search');
 
 Route::middleware('guest')->group(function () {
     //% Auth
