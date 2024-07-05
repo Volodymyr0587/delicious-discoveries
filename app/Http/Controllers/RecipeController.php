@@ -66,7 +66,10 @@ class RecipeController extends Controller
      */
     public function show(Recipe $recipe)
     {
-        return view('recipes.show', compact('recipe'));
+        $nextRecipe = Recipe::where('id', '>', $recipe->id)->orderBy('id')->first();
+        $previousRecipe = Recipe::where('id', '<', $recipe->id)->orderBy('id', 'desc')->first();
+
+        return view('recipes.show', compact('recipe', 'nextRecipe', 'previousRecipe'));
     }
 
     /**
