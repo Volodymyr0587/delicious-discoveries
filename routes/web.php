@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\SessionController;
@@ -33,6 +34,10 @@ Route::middleware('auth')->group(function () {
         Route::patch('/recipes/{recipe}', [RecipeController::class, 'update'])->can('edit', 'recipe')->name('update');
         Route::delete('/recipes/{recipe}', [RecipeController::class, 'destroy'])->can('edit', 'recipe')->name('destroy');
     });
+
+    //% Comments
+    Route::post('/recipes/{recipe}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/comment/{comment}', [CommentController::class, 'destroy'])->can('deleteComment', 'comment')->name('comment.destroy');
 
     Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
 });
