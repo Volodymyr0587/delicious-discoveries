@@ -35,6 +35,16 @@ class Recipe extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function isLikedBy(User $user)
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
+    }
+
     public function scopeOfCategory($query, $categoryId)
     {
         return $categoryId ? $query->where('category_id', $categoryId) : $query;

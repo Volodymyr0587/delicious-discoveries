@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Like;
 use App\Models\User;
 use App\Models\Recipe;
 use App\Models\Category;
@@ -130,6 +131,41 @@ class RecipeController extends Controller
                     ->paginate(3);
 
         return view('recipes.index', compact('recipes', 'user', 'categories', 'category_id'));
+    }
+
+
+    public function likeRecipe(Recipe $recipe)
+    {
+        $user = auth()->user();
+
+        if ($user->id === $recipe->user_id) {
+            return response()->json(['error' => 'You cannot like your own recipe.'], 403);
+        }
+
+        if ($recipe->isLikedBy($user)) {
+            return response()->json(['error' => 'You have already liked this recipe.'], 403);
+        }
+
+        $like = new Like();
+        $like->user()->associate($user);
+        $like->recipe()->associate($recipe);
+        $like->save();
+
+        return response()->json(['success' => 'Recipe liked successfully.', 'likes_count' => $recipe->likes()->count()]);
+    }
+
+    public function unlikeRecipe(Recipe $recipe)
+    {
+        $user = auth()->user();
+
+        $like = $recipe->likes()->where('user_id', $user->id)->first();
+
+        if ($like) {
+            $like->delete();
+            return response()->json(['success' => 'Like removed successfully.', 'likes_count' => $recipe->likes()->count()]);
+        }
+
+        return response()->json(['error' => 'You have not liked this recipe.'], 403);
     }
 
 }

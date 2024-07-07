@@ -39,6 +39,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/recipes/{recipe}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::delete('/comment/{comment}', [CommentController::class, 'destroy'])->can('deleteComment', 'comment')->name('comment.destroy');
 
+    //% Likes
+    Route::post('/recipes/{recipe}/like', [RecipeController::class, 'likeRecipe'])->name('recipes.like');
+    Route::delete('/recipes/{recipe}/unlike', [RecipeController::class, 'unlikeRecipe'])->name('recipes.unlike');
+
     Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
 });
 
