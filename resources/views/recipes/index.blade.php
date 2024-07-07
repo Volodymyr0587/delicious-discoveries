@@ -97,7 +97,7 @@
             </button>
 
             <template x-for="image in images.slice(currentIndex, currentIndex + 6)" :key="images.indexOf(image)">
-                <img class="w-1/6 hover:opacity-75" :src="image">
+                <img class="w-1/6 hover:opacity-75 object-cover h-56" :src="image">
             </template>
             <button
                 class="absolute right-0 bg-blue-800 hover:bg-blue-700 text-white text-2xl font-bold hover:shadow rounded-full w-16 h-16 mr-12"
@@ -112,18 +112,18 @@
             return {
                 currentIndex: 0,
                 images: [
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
-                    'https://picsum.photos/id/' + getRandomInt(1, 1000) + '/800/800',
+                    '{{ asset('images/dessert.jpg') }}',
+                    '{{ asset('images/dessert2.jpg') }}',
+                    '{{ asset('images/drink-with-straw.jpg') }}',
+                    '{{ asset('images/fish.jpg') }}',
+                    '{{ asset('images/fried-eggs-whit-bacon.jpg') }}',
+                    '{{ asset('images/hamburger.jpg') }}',
+                    '{{ asset('images/ice-cream.jpg') }}',
+                    '{{ asset('images/meat-with-vegetables.jpg') }}',
+                    '{{ asset('images/oysters.jpg') }}',
+                    '{{ asset('images/pizza.jpg') }}',
+                    '{{ asset('images/salad.jpg') }}',
+                    '{{ asset('images/sandwich.jpg') }}',
                 ],
                 increment() {
                     this.currentIndex = this.currentIndex === this.images.length - 6 ? 0 : this.currentIndex + 1;
