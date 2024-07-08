@@ -28,7 +28,10 @@
     <!-- Top Bar Nav -->
     <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white text-sm py-4 dark:bg-neutral-800">
         <nav class="max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between" aria-label="Global">
-            <div class="w-full flex flex-col md:flex-row md:space-x-4">
+            <div class=" flex flex-col md:flex-row items-center md:space-x-4">
+                <a class="flex-none" href="{{ route('recipes.index') }}">
+                    <img class="h-10 w-10" src="{{ asset('images/cooking-food-fried.png') }}" alt="">
+                </a>
                 <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500 {{ request()->routeIs('recipes.index') ? 'underline underline-offset-8' : ''  }}" href="{{ route('recipes.index') }}">Головна</a>
                 <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" href="#">Про нас</a>
                 @auth
@@ -37,7 +40,7 @@
             </div>
 
 
-          <div class="flex flex-row items-center gap-5 mt-5 sm:justify-end sm:mt-0 sm:ps-5">
+          <div class="flex flex-col md:flex-row items-center md:space-x-4">
             @auth
                 <span class="flex-none text-xl font-bold dark:text-white">{{ auth()->user()->name }}</span>
 
