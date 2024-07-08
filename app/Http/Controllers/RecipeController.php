@@ -44,7 +44,7 @@ class RecipeController extends Controller
             'category_id' => 'required|exists:categories,id',
             'ingredients' => 'required|string',
             'description' => 'required|string',
-            'image' => 'nullable|image'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         $data['ingredients'] = str($request->ingredients)->squish();
@@ -92,7 +92,7 @@ class RecipeController extends Controller
             'category_id' => 'required|exists:categories,id',
             'ingredients' => 'required|string',
             'description' => 'required|string',
-            'image' => 'nullable|image'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         $data['ingredients'] = str($request->ingredients)->squish();
