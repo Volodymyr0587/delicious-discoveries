@@ -6,6 +6,7 @@
     <title>Delicious Discoveries</title>
     <meta name="author" content="Volodymyr Honcharov">
     <meta name="description" content="">
+    <link rel="icon" href="{{ asset('cooking-food-fried.ico') }}">
 
     <!-- Tailwind -->
     @vite('resources/css/app.css')

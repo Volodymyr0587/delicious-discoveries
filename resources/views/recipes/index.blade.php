@@ -33,6 +33,7 @@
             @empty
                 <div class="my-4 font-semibold text-2xl">
                     No Recipes
+                    <x-svg.no-recipes />
                 </div>
             @endforelse
 
