@@ -16,7 +16,7 @@
             <a href="{{ route('recipes.index') }}" class="hover:bg-gray-400 rounded py-2 px-4 mx-2 {{ is_null($category_id) ? 'bg-gray-400' : '' }}">Всі</a>
 
             @foreach ($categories as $category)
-            <a href="{{ route('recipes.index', ['category_id' => $category->id]) }}" class="hover:bg-gray-400 rounded py-2 px-4 mx-2 {{ $category_id == $category->id ? 'bg-gray-400' : '' }}">
+            <a href="{{ route('recipes.index', ['category_id' => $category->id]) }}" class="hover:bg-gray-400 rounded py-2 px-2 mx-2 {{ $category_id == $category->id ? 'bg-gray-400' : '' }}">
                 {{ $category->category_name }}
             </a>
             @endforeach
