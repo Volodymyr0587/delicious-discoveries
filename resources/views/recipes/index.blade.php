@@ -38,7 +38,7 @@
             @endforelse
 
             <div class="space-x-8 py-8">
-                {{ $recipes->links() }}
+                {{ $recipes->appends(['category_id' => request('category_id')])->links() }}
             </div>
 
             <!-- Pagination -->
