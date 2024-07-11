@@ -42,12 +42,34 @@
 
           <div class="flex flex-col md:flex-row items-center md:space-x-4">
             @auth
-                <span class="flex-none text-xl font-bold dark:text-white">{{ auth()->user()->name }}</span>
+                <div x-data="{ open: false }" @click.away="open = false" class="relative inline-block text-left">
+                    <!-- User Name -->
+                    <div @click="open = !open" class="flex items-center gap-2 hover:text-blue-500 dark:text-white cursor-pointer">
+                        <span  class="flex-none text-xl font-bold">
+                            {{ auth()->user()->name }}
+                        </span>
+                        <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mt-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
+                        </svg>
+                        <svg x-show="open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mt-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 18.75 7.5-7.5 7.5 7.5" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 7.5-7.5 7.5 7.5" />
+                        </svg>
+                    </div>
+                    <!-- Dropdown Menu -->
+                    <div x-show="open" x-transition class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg dark:text-white dark:bg-neutral-800 dark:ring-lime-300  ring-2 ring-black ring-opacity-5">
+                        <div class="py-1">
+                            <a href="{{ route('user.recipes', auth()->user()) }}" class="block px-4 py-2 text-xl text-left hover:text-blue-500 font-semibold cursor-pointer">Мої рецепти</a>
+                        </div>
+                        <div class="py-1">
+                            <form action="{{ route('logout') }}" method="POST" class="block px-4 py-2 text-xl font-semibold cursor-pointer">
+                                @csrf
+                                <button type="submit" class="w-full text-left hover:text-blue-500">Вийти</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
-                <form class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit">Вийти</button>
-                </form>
             @else
                 <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500 {{ request()->routeIs('login') ? 'underline underline-offset-8' : ''  }}" href="{{ route('login') }}">Увійти</a>
                 <a class="flex-none text-xl font-semibold dark:text-white hover:text-blue-500 {{ request()->routeIs('register') ? 'underline underline-offset-8' : ''  }}" href="{{ route('register') }}">Зареєструватись</a>
