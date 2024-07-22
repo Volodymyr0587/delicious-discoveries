@@ -67,6 +67,8 @@ class RecipeController extends Controller
      */
     public function show(Recipe $recipe)
     {
+        $recipe->incrementViews();
+
         $nextRecipe = Recipe::where('id', '>', $recipe->id)->orderBy('id')->first();
         $previousRecipe = Recipe::where('id', '<', $recipe->id)->orderBy('id', 'desc')->first();
 

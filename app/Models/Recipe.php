@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Viewable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Recipe extends Model
 {
-    use HasFactory;
+    use HasFactory, Viewable;
 
     protected $fillable = [
         'user_id',
