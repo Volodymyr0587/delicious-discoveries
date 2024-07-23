@@ -1,17 +1,27 @@
 <?php
 
 namespace App\Traits;
-use Illuminate\Support\Facades\Session;
+
+use App\Models\RecipeView;
+use Illuminate\Support\Facades\Auth;
+
 
 trait Viewable
 {
     public function incrementViews()
     {
-        $recipeKey = 'recipe_' . $this->id;
+        if (Auth::check()) {
+            $userId = Auth::id();
+            $recipeId = $this->id;
 
-        if (!Session::has($recipeKey)) {
-            $this->increment('views');
-            Session::put($recipeKey, 1);
+            $view = RecipeView::firstOrCreate([
+                'recipe_id' => $recipeId,
+                'user_id' => $userId,
+            ]);
+
+            if ($view->wasRecentlyCreated) {
+                $this->increment('views');
+            }
         }
     }
 }
