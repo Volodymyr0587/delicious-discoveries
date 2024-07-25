@@ -140,6 +140,10 @@ class RecipeController extends Controller
     {
         $user = auth()->user();
 
+        if (!$user instanceof User) {
+            return response()->json(['error' => 'You must be logged in to like a recipe.'], 403);
+        }
+
         if ($user->id === $recipe->user_id) {
             return response()->json(['error' => 'You cannot like your own recipe.'], 403);
         }
