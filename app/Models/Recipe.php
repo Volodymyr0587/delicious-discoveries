@@ -64,6 +64,7 @@ class Recipe extends Model
             if ($recipe->image) {
                 Storage::disk('public')->delete($recipe->image);
             }
+            $recipe->views()->delete();
         });
     }
 }
