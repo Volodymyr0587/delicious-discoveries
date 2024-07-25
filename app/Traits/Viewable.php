@@ -2,21 +2,27 @@
 
 namespace App\Traits;
 
-use App\Models\RecipeView;
+use App\Models\View;
 use Illuminate\Support\Facades\Auth;
 
 
 trait Viewable
 {
+
+    public function views()
+    {
+        return $this->morphMany(View::class, 'viewable');
+    }
+
     public function incrementViews()
     {
         if (Auth::check()) {
             $userId = Auth::id();
-            $recipeId = $this->id;
 
-            $view = RecipeView::firstOrCreate([
-                'recipe_id' => $recipeId,
+            $view = View::firstOrCreate([
                 'user_id' => $userId,
+                'viewable_id' => $this->id,
+                'viewable_type' => get_class($this),
             ]);
 
             if ($view->wasRecentlyCreated) {
