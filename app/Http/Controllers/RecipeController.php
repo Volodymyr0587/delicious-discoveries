@@ -6,10 +6,14 @@ use App\Models\Like;
 use App\Models\User;
 use App\Models\Recipe;
 use App\Models\Category;
+use App\Services\ReadingTimeService;
 use Illuminate\Http\Request;
 
 class RecipeController extends Controller
 {
+    public function __construct(private ReadingTimeService $readingTimeService)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
@@ -72,7 +76,9 @@ class RecipeController extends Controller
         $nextRecipe = Recipe::where('id', '>', $recipe->id)->orderBy('id')->first();
         $previousRecipe = Recipe::where('id', '<', $recipe->id)->orderBy('id', 'desc')->first();
 
-        return view('recipes.show', compact('recipe', 'nextRecipe', 'previousRecipe'));
+        $readingTime = $this->readingTimeService->calculateReadingTime($recipe->description);
+
+        return view('recipes.show', compact('recipe', 'nextRecipe', 'previousRecipe', 'readingTime'));
     }
 
     /**
