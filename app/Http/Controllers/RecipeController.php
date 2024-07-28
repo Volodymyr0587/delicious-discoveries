@@ -21,7 +21,12 @@ class RecipeController extends Controller
     {
         $category_id = $request->input('category_id');
 
-        $recipes = Recipe::ofCategory($category_id)->orderBy('recipe_name')->paginate(3);
+        // $recipes = Recipe::ofCategory($category_id)->orderBy('recipe_name')->paginate(3);
+        $recipes = Recipe::ofCategory($category_id)
+            ->with(['category', 'user']) // Eager load the category relationship
+            ->orderBy('recipe_name')
+            ->paginate(3);
+
         $categories = Category::all();
 
         return view('recipes.index', compact('recipes', 'categories', 'category_id'));
