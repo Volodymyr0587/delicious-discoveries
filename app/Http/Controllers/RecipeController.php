@@ -141,6 +141,7 @@ class RecipeController extends Controller
         $categories = Category::all();
         $recipes = Recipe::ofUser($user->id)
                     ->ofCategory($category_id)
+                    ->with(['category', 'user'])
                     ->paginate(3);
 
         return view('recipes.index', compact('recipes', 'user', 'categories', 'category_id'));

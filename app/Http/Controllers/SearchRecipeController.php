@@ -30,7 +30,9 @@ class SearchRecipeController extends Controller
             ],
             'LIKE',
             "%$search%"
-        )->paginate(3);
+        )
+            ->with(['user', 'category'])
+            ->paginate(3);
 
         return view('recipes.search', compact('recipes', 'search', 'category_id', 'categories'));
     }
