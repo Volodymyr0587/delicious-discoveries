@@ -46,18 +46,6 @@
             <div class="space-x-8 py-8">
                 {{ $recipes->appends(['category_id' => request('category_id')])->links() }}
             </div>
-
-            <!-- Pagination -->
-            {{-- <div class="flex items-center py-8">
-                <a href="#"
-                    class="h-10 w-10 bg-blue-800 hover:bg-blue-600 font-semibold text-white text-sm flex items-center justify-center">1</a>
-                <a href="#"
-                    class="h-10 w-10 font-semibold text-gray-800 hover:bg-blue-600 hover:text-white text-sm flex items-center justify-center">2</a>
-                <a href="#"
-                    class="h-10 w-10 font-semibold text-gray-800 hover:text-gray-900 text-sm flex items-center justify-center ml-3">Next
-                    <i class="fas fa-arrow-right ml-2"></i></a>
-            </div> --}}
-
         </section>
 
         <!-- Sidebar Section -->
@@ -97,28 +85,37 @@
     </div>
 
     <footer class="w-full border-t bg-white pb-6">
-        <div class="relative w-full flex items-center invisible md:visible md:pb-12" x-data="getCarouselData()">
+        <div class="relative w-full overflow-hidden" x-data="carousel()" x-init="init()">
+
+            <!-- Left arrow -->
             <button
-                class="absolute left-0 bg-blue-800 hover:bg-blue-700 text-white text-2xl font-bold hover:shadow rounded-full w-16 h-16 ml-12 flex justify-center items-center z-10"
-                x-on:click="decrement()">
+                class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-blue-800 hover:bg-blue-700 text-white text-2xl font-bold rounded-full w-12 h-12 flex items-center justify-center z-10"
+                @click="prev()">
                 &#8592;
             </button>
 
-            <template x-for="image in images.slice(currentIndex, currentIndex + 6)" :key="images.indexOf(image)">
-                <img class="w-1/6 hover:opacity-75 object-cover h-56" :src="image">
-            </template>
+            <!-- Right arrow -->
             <button
-                class="absolute right-0 bg-blue-800 hover:bg-blue-700 text-white text-2xl font-bold hover:shadow rounded-full w-16 h-16 mr-12"
-                x-on:click="increment()">
+                class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-blue-800 hover:bg-blue-700 text-white text-2xl font-bold rounded-full w-12 h-12 flex items-center justify-center z-10"
+                @click="next()">
                 &#8594;
             </button>
+
+            <!-- Carousel track -->
+            <div class="flex transition-transform duration-500" :style="`transform: translateX(-${currentOffset}px)`">
+                <template x-for="(image, index) in visibleImages" :key="index">
+                    <div class="flex-shrink-0 px-1 w-1/6 md:w-1/6 sm:w-1/3">
+                        <img :src="image" loading="lazy"
+                            class="w-full h-56 object-cover rounded-md shadow-md hover:opacity-80" alt="Recipe Image">
+                    </div>
+                </template>
+            </div>
         </div>
     </footer>
 
     <script>
-        function getCarouselData() {
+        function carousel() {
             return {
-                currentIndex: 0,
                 images: [
                     '{{ asset('images/dessert.jpg') }}',
                     '{{ asset('images/dessert2.jpg') }}',
@@ -133,19 +130,43 @@
                     '{{ asset('images/salad.jpg') }}',
                     '{{ asset('images/sandwich.jpg') }}',
                 ],
-                increment() {
-                    this.currentIndex = this.currentIndex === this.images.length - 6 ? 0 : this.currentIndex + 1;
+                currentIndex: 0,
+                itemWidth: 0,
+                visibleImages: [],
+                init() {
+                    this.updateVisible();
+                    window.addEventListener('resize', () => this.updateVisible());
                 },
-                decrement() {
-                    this.currentIndex = this.currentIndex === 0 ? this.images.length - 6 : this.currentIndex - 1;
+                updateVisible() {
+                    // Кількість картинок на екрані
+                    const screenWidth = window.innerWidth;
+                    let itemsOnScreen = 6;
+                    if (screenWidth < 768) itemsOnScreen = 3;
+                    if (screenWidth < 480) itemsOnScreen = 2;
+
+                    this.visibleImages = this.getSlice(this.currentIndex, itemsOnScreen);
+                    this.itemWidth = document.querySelector('.flex-shrink-0')?.offsetWidth || 200;
                 },
+                getSlice(start, count) {
+                    // Infinite loop slice
+                    const result = [];
+                    for (let i = 0; i < count; i++) {
+                        result.push(this.images[(start + i) % this.images.length]);
+                    }
+                    return result;
+                },
+                next() {
+                    this.currentIndex = (this.currentIndex + 1) % this.images.length;
+                    this.updateVisible();
+                },
+                prev() {
+                    this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+                    this.updateVisible();
+                },
+                get currentOffset() {
+                    return 0; // використовуємо transform для плавного scroll
+                }
             }
         }
-
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
     </script>
-
-
 </x-layout>
