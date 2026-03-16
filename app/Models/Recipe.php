@@ -62,6 +62,20 @@ class Recipe extends Model
         return 'slug';
     }
 
+    public function next(): ?Recipe
+    {
+        return self::where('id', '>', $this->id)
+            ->orderBy('id')
+            ->first();
+    }
+
+    public function previous(): ?Recipe
+    {
+        return self::where('id', '<', $this->id)
+            ->orderByDesc('id')
+            ->first();
+    }
+
     protected static function boot()
     {
         parent::boot();

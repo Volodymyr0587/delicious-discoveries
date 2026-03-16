@@ -1,4 +1,4 @@
-@props(['categories', 'category_id'])
+@props(['categories', 'categoryId'])
 
 <nav class="w-full py-4 border-t border-b bg-gray-100" x-data="{ open: false }">
     <div class="block sm:hidden">
@@ -13,7 +13,7 @@
 
             <div class="flex items-center py-2 px-2 mx-2">
                 <a href="{{ route('recipes.index') }}"
-                    class="hover:bg-gray-400 rounded py-2 px-4 mx-2 {{ is_null($category_id) ? 'bg-gray-400' : '' }}">
+                    class="hover:bg-gray-400 rounded py-2 px-4 mx-2 {{ is_null($categoryId) ? 'bg-gray-400' : '' }}">
                     Всі
                 </a>
                 <span class="font-bold ml-1 px-2 py-1 rounded-md bg-lime-300">{{ App\Models\Recipe::count() }}</span>
@@ -22,7 +22,7 @@
             @foreach ($categories as $category)
                 <div class="flex items-center py-2 px-2 mx-2">
                     <a href="{{ route('recipes.index', ['category_id' => $category->id]) }}"
-                        class="hover:bg-gray-400 rounded py-2 px-2  {{ $category_id == $category->id ? 'bg-gray-400' : '' }}">
+                        class="hover:bg-gray-400 rounded py-2 px-2  {{ $categoryId == $category->id ? 'bg-gray-400' : '' }}">
                         {{ $category->name }}
                     </a>
                     <span

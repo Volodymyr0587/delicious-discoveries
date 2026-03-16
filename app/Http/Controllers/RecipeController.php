@@ -2,188 +2,131 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Like;
 use App\Models\User;
 use App\Models\Recipe;
 use App\Models\Category;
-use App\Services\ReadingTimeService;
 use Illuminate\Http\Request;
+use App\Services\LikeService;
+use App\Services\RecipeService;
+use App\Services\ReadingTimeService;
+use App\Http\Requests\StoreRecipeRequest;
+use App\Http\Requests\UpdateRecipeRequest;
 
 class RecipeController extends Controller
 {
-    public function __construct(private ReadingTimeService $readingTimeService)
-    {
+    public function __construct(
+        private RecipeService $recipeService,
+        private LikeService $likeService,
+        private ReadingTimeService $readingTimeService
+    ) {
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
-        $category_id = $request->input('category_id');
+        $categoryId = $request->integer('category_id');
 
-        // $recipes = Recipe::ofCategory($category_id)->orderBy('recipe_name')->paginate(3);
-        $recipes = Recipe::ofCategory($category_id)
-            ->with(['category', 'user']) // Eager load the category relationship
+        $recipes = Recipe::ofCategory($categoryId)
+            ->with(['category', 'user'])
             ->orderBy('name')
             ->paginate(3);
 
         $categories = Category::withCount('recipes')->get();
 
-        return view('recipes.index', compact('recipes', 'categories', 'category_id'));
+        return view('recipes.index', compact('recipes', 'categories', 'categoryId'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $categories = Category::all();
+
         return view('recipes.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreRecipeRequest $request)
     {
-        $user = auth()->user();
+        $recipe = $this->recipeService->create(
+            $request->validated(),
+            $request->user()
+        );
 
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'ingredients' => 'required|string',
-            'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
-        ]);
-
-        $data['ingredients'] = str($request->ingredients)->squish();
-
-        // Handle image upload if present
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('images', 'public');
-        }
-
-        $recipe = new Recipe($data);
-        $recipe->user()->associate($user);
-        $recipe->category()->associate(Category::find($data['category_id']));
-        $recipe->save();
-
-        return to_route('recipes.index')->with('success', 'Recipe created successfully.');
+        return to_route('recipes.index')
+            ->with('success', 'Recipe created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Recipe $recipe)
     {
+        $recipe->load(['category', 'user', 'likes']);
+
         $recipe->incrementViews();
 
-        $nextRecipe = Recipe::where('id', '>', $recipe->id)->orderBy('id')->first();
-        $previousRecipe = Recipe::where('id', '<', $recipe->id)->orderBy('id', 'desc')->first();
+        $readingTime = $this->readingTimeService
+            ->calculateReadingTime($recipe->description);
 
-        $readingTime = $this->readingTimeService->calculateReadingTime($recipe->description);
-
-        return view('recipes.show', compact('recipe', 'nextRecipe', 'previousRecipe', 'readingTime'));
+        return view('recipes.show', [
+            'recipe' => $recipe,
+            'nextRecipe' => $recipe->next(),
+            'previousRecipe' => $recipe->previous(),
+            'readingTime' => $readingTime,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Recipe $recipe)
     {
         $categories = Category::all();
+
         return view('recipes.edit', compact('recipe', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Recipe $recipe)
+    public function update(UpdateRecipeRequest $request, Recipe $recipe)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'ingredients' => 'required|string',
-            'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
-        ]);
+        $this->recipeService->update(
+            $recipe,
+            $request->validated()
+        );
 
-        $data['ingredients'] = str($request->ingredients)->squish();
-
-        // Handle image upload if present
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('images', 'public');
-        } else {
-            unset($data['image']);
-        }
-
-        $recipe->update($data);
-        $recipe->category()->associate(Category::find($data['category_id']));
-        $recipe->save();
-
-        return to_route('recipes.show', $recipe)->with('success', 'Recipe updated successfully.');
+        return to_route('recipes.show', $recipe)
+            ->with('success', 'Recipe updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Recipe $recipe)
     {
         $recipe->delete();
 
-        return redirect()->route('recipes.index')->with('success', 'Recipe deleted successfully.');
+        return to_route('recipes.index')
+            ->with('success', 'Recipe deleted successfully.');
     }
-
 
     public function userRecipes(User $user, Request $request)
     {
-        $category_id = $request->input('category_id');
-        $categories = Category::all();
+        $categoryId = $request->integer('category_id');
+
         $recipes = Recipe::ofUser($user->id)
-            ->ofCategory($category_id)
+            ->ofCategory($categoryId)
             ->with(['category', 'user'])
             ->paginate(3);
 
-        return view('recipes.index', compact('recipes', 'user', 'categories', 'category_id'));
+        $categories = Category::withCount('recipes')->get();
+
+        return view('recipes.index', compact('recipes', 'user', 'categories', 'categoryId'));
     }
 
-
-    public function likeRecipe(Recipe $recipe)
+    public function likeRecipe(Recipe $recipe, Request $request)
     {
-        $user = auth()->user();
+        $result = $this->likeService->like(
+            $recipe,
+            $request->user()
+        );
 
-        if (!$user instanceof User) {
-            return response()->json(['error' => 'You must be logged in to like a recipe.'], 403);
-        }
-
-        if ($user->id === $recipe->user_id) {
-            return response()->json(['error' => 'You cannot like your own recipe.'], 403);
-        }
-
-        if ($recipe->isLikedBy($user)) {
-            return response()->json(['error' => 'You have already liked this recipe.'], 403);
-        }
-
-        $like = new Like();
-        $like->user()->associate($user);
-        $like->recipe()->associate($recipe);
-        $like->save();
-
-        return response()->json(['success' => 'Recipe liked successfully.', 'likes_count' => $recipe->likes()->count()]);
+        return response()->json($result);
     }
 
-    public function unlikeRecipe(Recipe $recipe)
+    public function unlikeRecipe(Recipe $recipe, Request $request)
     {
-        $user = auth()->user();
+        $result = $this->likeService->unlike(
+            $recipe,
+            $request->user()
+        );
 
-        $like = $recipe->likes()->where('user_id', $user->id)->first();
-
-        if ($like) {
-            $like->delete();
-            return response()->json(['success' => 'Like removed successfully.', 'likes_count' => $recipe->likes()->count()]);
-        }
-
-        return response()->json(['error' => 'You have not liked this recipe.'], 403);
+        return response()->json($result);
     }
-
 }

@@ -1,7 +1,7 @@
 <x-layout>
 
     <!-- Categories -->
-    <x-categories-nav :categories="$categories" :category_id="$category_id" />
+    <x-categories-nav :categories="$categories" :categoryId="$categoryId" />
 
     <x-search-bar />
 
