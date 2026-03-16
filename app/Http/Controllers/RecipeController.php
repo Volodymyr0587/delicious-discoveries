@@ -24,7 +24,7 @@ class RecipeController extends Controller
         // $recipes = Recipe::ofCategory($category_id)->orderBy('recipe_name')->paginate(3);
         $recipes = Recipe::ofCategory($category_id)
             ->with(['category', 'user']) // Eager load the category relationship
-            ->orderBy('recipe_name')
+            ->orderBy('name')
             ->paginate(3);
 
         $categories = Category::all();
@@ -49,7 +49,7 @@ class RecipeController extends Controller
         $user = auth()->user();
 
         $data = $request->validate([
-            'recipe_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'ingredients' => 'required|string',
             'description' => 'required|string',
@@ -101,7 +101,7 @@ class RecipeController extends Controller
     public function update(Request $request, Recipe $recipe)
     {
         $data = $request->validate([
-            'recipe_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'ingredients' => 'required|string',
             'description' => 'required|string',
@@ -140,9 +140,9 @@ class RecipeController extends Controller
         $category_id = $request->input('category_id');
         $categories = Category::all();
         $recipes = Recipe::ofUser($user->id)
-                    ->ofCategory($category_id)
-                    ->with(['category', 'user'])
-                    ->paginate(3);
+            ->ofCategory($category_id)
+            ->with(['category', 'user'])
+            ->paginate(3);
 
         return view('recipes.index', compact('recipes', 'user', 'categories', 'category_id'));
     }

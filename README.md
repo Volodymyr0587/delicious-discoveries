@@ -14,7 +14,7 @@ The Recipe App is a web application built using Laravel that allows users to cre
 
 ## Installation
 
-###  Prerequisites
+### Prerequisites
 
 Before you begin, ensure you have the following installed on your machine:
 
@@ -26,50 +26,114 @@ Before you begin, ensure you have the following installed on your machine:
 
 ### Steps
 
-1. Clone the repository
+#### 1. Clone the repository
 
 - `git clone https://github.com/Volodymyr0587/delicious-discoveries`
 
-- `cd recipe-app`
+- `cd delicious-discoveries`
 
-2. Install dependencies
+#### 2. Install dependencies
 
 - `composer install`
 - `npm install`
 
-3. Set up environment variables
+#### 3. Set up environment variables
 
 - `cp .env.example .env`
 
 - Update the .env file with your database credentials and other necessary configurations.
 
-4. Generate Application Key
+#### 4. Generate Application Key
 
 - `php artisan key:generate`
 
-5. Run Migrations and Seeders
-
-- Set up the database by running migrations and seeders:
-
-- `php artisan migrate --seed`
-
-6. Link storage
+#### 5. Link storage
 
 - Create a symbolic link from `public/storage` to `storage/app/public`:
 
     `php artisan storage:link`
 
-7. Build assets
+#### 6. Build assets
 
 - Build the frontend assets:
 
     `npm run dev`
 
-8. Serve the Application
+#### 7. Serve the Application
+
+- To run application at http://localhost:8000
 
     `php artisan serve`
 
-    The application should now be running at http://localhost:8000.
+## Database Seeding
+
+This project includes database seeders that populate the application with demo data such as users, categories, and recipes.
+
+### Seeded Data
+
+The following data will be created:
+
+**Users**
+
+Several demo users:
+
+- Chef Ivan
+- Chef Olena
+- Chef Taras
+
+**Categories**
+
+Recipe categories such as:
+
+- перші страви
+- другі страви
+- салати та закуски
+- випічка
+- торти
+- десерти
+- напої
+- сніданки
+- соуси та заправки
+- гарніри
+- паста та макарони
+- гриль та барбекю
+
+**Recipes**
+
+Each category contains multiple real recipes including ingredients and descriptions.
+Recipes are randomly assigned to available users.
+
+---
+
+### Run migrations and seed the database
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+This command will:
+
+1. Drop all tables
+2. Run all migrations
+3. Seed the database with demo data
+
+---
+
+### Seeder Structure
+
+```
+database/seeders
+├── DatabaseSeeder.php
+├── CategorySeeder.php
+├── UserSeeder.php
+└── RecipeSeeder.php
+```
+
+Seeder responsibilities:
+
+- **CategorySeeder** – creates recipe categories
+- **UserSeeder** – creates demo users
+- **RecipeSeeder** – creates recipes and attaches them to categories and users
 
 ### Usage
 
@@ -79,24 +143,22 @@ Register a new user or log in with existing credentials. Only authenticated user
 
 **Recipe Management**
 
-***Create a Recipe:***  Navigate to the "Create Recipe" page, fill out the form, and submit.
+**_Create a Recipe:_** Navigate to the "Create Recipe" page, fill out the form, and submit.
 
-***View Recipes:*** Browse through the list of recipes on the homepage. 
+**_View Recipes:_** Browse through the list of recipes on the homepage.
 
-***Filter by Category:*** Use the category dropdown to filter recipes. 
+**_Filter by Category:_** Use the category dropdown to filter recipes.
 
-***Pagination:*** Use the pagination links to navigate through pages, retaining the applied filters.
+**_Pagination:_** Use the pagination links to navigate through pages, retaining the applied filters.
 
-***Comments:*** Authenticated users can comment on recipes. Users cannot comment on their own recipes. The comment form is displayed at the top of the comments section.
+**_Comments:_** Authenticated users can comment on recipes. Users cannot comment on their own recipes. The comment form is displayed at the top of the comments section.
 
-***Likes:*** Authenticated users can like/unlike recipes. Users cannot like their own recipes. Likes are updated without reloading the page using AlpineJS.
+**_Likes:_** Authenticated users can like/unlike recipes. Users cannot like their own recipes. Likes are updated without reloading the page using AlpineJS.
 
 ### Additional Notes
 
 The application uses AlpineJS for handling likes without reloading the page. Use the .env file to configure the application settings, such as the database connection and other environment-specific configurations.
 
-
-
 ## License
 
-This project is licensed under the MIT License.
+Free to use and modify.

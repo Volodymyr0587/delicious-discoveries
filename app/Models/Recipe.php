@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\Traits\Viewable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
 class Recipe extends Model
 {
@@ -15,7 +16,7 @@ class Recipe extends Model
     protected $fillable = [
         'user_id',
         'category_id',
-        'recipe_name',
+        'name',
         'ingredients',
         'description',
         'image'
@@ -56,9 +57,36 @@ class Recipe extends Model
         return $userId ? $query->where('user_id', $userId) : $query;
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     protected static function boot()
     {
         parent::boot();
+
+        static::creating(function ($recipe) {
+
+            $slug = Str::slug($recipe->name);
+
+            $count = static::where('slug', 'LIKE', "{$slug}%")->count();
+
+            $recipe->slug = $count
+                ? "{$slug}-{$count}"
+                : $slug;
+
+        });
+
+        static::updating(function ($recipe) {
+
+            if ($recipe->isDirty('name')) {
+
+                $recipe->slug = Str::slug($recipe->name);
+
+            }
+
+        });
 
         static::deleting(function ($recipe) {
             if ($recipe->image) {

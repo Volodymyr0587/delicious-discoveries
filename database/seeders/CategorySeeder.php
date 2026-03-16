@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CategorySeeder extends Seeder
 {
@@ -20,11 +19,16 @@ class CategorySeeder extends Seeder
             'випічка',
             'торти',
             'десерти',
-            'напої'
+            'напої',
+            'сніданки',
+            'соуси та заправки',
+            'гарніри',
+            'паста та макарони',
+            'гриль та барбекю',
         ];
 
         foreach ($categories as $category) {
-            Category::create(['category_name' => $category]);
+            Category::firstOrCreate(['name' => $category]);
         }
     }
 }

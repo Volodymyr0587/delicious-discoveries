@@ -11,26 +11,31 @@
         <section class="w-full md:w-2/3 flex flex-col items-center px-3">
 
             @forelse ($recipes as $recipe)
-            <article class="flex flex-col shadow my-4">
-                <!-- Recipes Image -->
-                <a href="{{ route('recipes.show', $recipe) }}" class="hover:opacity-75">
-                    <img src="{{$recipe->image ? asset('storage/' . $recipe->image) : asset('images/food.jpg') }}">
-                </a>
-                <div class="bg-white flex flex-col justify-start p-6">
-                    <a href="{{ route('recipes.index', ['category_id' => $recipe->category->id]) }}" class="text-blue-700 text-sm font-bold uppercase pb-4">{{ $recipe->category->category_name }}</a>
-                    <a href="{{ route('recipes.show', $recipe) }}" class="text-3xl font-bold hover:text-gray-700 pb-4 first-letter:text-7xl capitalize">{{ $recipe->recipe_name }}</a>
-                    <p class="text-sm pb-3">
-                        Від <a href="{{ route('user.recipes', $recipe->user) }}" class="font-semibold hover:text-gray-800 underline">{{ $recipe->user->name }}</a>
-                        Створено {{ $recipe->created_at->locale('uk')->diffForHumans() }}.
-                        Сподобалось <span class="font-semibold">{{ $recipe->likes()->count() }}</span>
-                    </p>
-                    <p>Переглядів <span class="font-semibold">{{ $recipe->views }}</span></p>
-                    <a href="{{ route('recipes.show', $recipe) }}" class="pb-6">{{ Str::limit($recipe->description, 40) }}</a>
-                    <a href="{{ route('recipes.show', $recipe) }}" class="uppercase text-gray-800 hover:text-black">Продовжити читати
-                        <i class="fas fa-arrow-right"></i>
+                <article class="flex flex-col shadow my-4">
+                    <!-- Recipes Image -->
+                    <a href="{{ route('recipes.show', $recipe) }}" class="hover:opacity-75">
+                        <img src="{{ $recipe->image ? asset('storage/' . $recipe->image) : asset('images/food.jpg') }}">
                     </a>
-                </div>
-            </article>
+                    <div class="bg-white flex flex-col justify-start p-6">
+                        <a href="{{ route('recipes.index', ['category_id' => $recipe->category->id]) }}"
+                            class="text-blue-700 text-sm font-bold uppercase pb-4">{{ $recipe->category->name }}</a>
+                        <a href="{{ route('recipes.show', $recipe) }}"
+                            class="text-3xl font-bold hover:text-gray-700 pb-4 first-letter:text-7xl capitalize">{{ $recipe->name }}</a>
+                        <p class="text-sm pb-3">
+                            Від <a href="{{ route('user.recipes', $recipe->user) }}"
+                                class="font-semibold hover:text-gray-800 underline">{{ $recipe->user->name }}</a>
+                            Створено {{ $recipe->created_at->locale('uk')->diffForHumans() }}.
+                            Сподобалось <span class="font-semibold">{{ $recipe->likes()->count() }}</span>
+                        </p>
+                        <p>Переглядів <span class="font-semibold">{{ $recipe->views }}</span></p>
+                        <a href="{{ route('recipes.show', $recipe) }}"
+                            class="pb-6">{{ Str::limit($recipe->description, 40) }}</a>
+                        <a href="{{ route('recipes.show', $recipe) }}"
+                            class="uppercase text-gray-800 hover:text-black">Продовжити читати
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
             @empty
                 <div class="my-4 font-semibold text-2xl">
                     No Recipes

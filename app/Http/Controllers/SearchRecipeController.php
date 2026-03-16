@@ -25,7 +25,7 @@ class SearchRecipeController extends Controller
 
         $recipes = Recipe::whereAny(
             [
-                'recipe_name',
+                'name',
                 'ingredients',
             ],
             'LIKE',
