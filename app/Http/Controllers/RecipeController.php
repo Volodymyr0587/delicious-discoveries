@@ -27,7 +27,7 @@ class RecipeController extends Controller
             ->orderBy('name')
             ->paginate(3);
 
-        $categories = Category::all();
+        $categories = Category::withCount('recipes')->get();
 
         return view('recipes.index', compact('recipes', 'categories', 'category_id'));
     }

@@ -26,7 +26,7 @@
                         {{ $category->name }}
                     </a>
                     <span
-                        class="font-bold ml-1 px-2 py-1 rounded-md {{ $loop->iteration % 2 == 0 ? 'bg-lime-300' : 'bg-amber-300' }}">{{ $category->recipes()->count() }}</span>
+                        class="font-bold ml-1 px-2 py-1 rounded-md {{ $loop->iteration % 2 == 0 ? 'bg-lime-300' : 'bg-amber-300' }}">{{ $category->recipes_count }}</span>
                 </div>
             @endforeach
         </div>
