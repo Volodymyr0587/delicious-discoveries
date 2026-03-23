@@ -28,7 +28,7 @@
             <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Назва рецепту</label>
             <input type="text" id="name" name="name" value="{{ $recipe->name }}"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="" required />
+                placeholder="Мій рецепт борщу (звичайно, що найкращий)" />
             @error('name')
                 <span class="mt-4 text-red-500 text-sm">{{ $message }}</span>
             @enderror
@@ -36,9 +36,19 @@
         <div class="mb-5">
             <label for="ingredients" class="block mb-2 text-sm font-medium text-gray-900">Інгредієнти (розділяти
                 комою)</label>
-            <textarea id="ingredients" name="ingredients"
+            <textarea id="ingredients" name="ingredients" rows="15"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="молоко, яйця, борошно, сіль, вершкове масло" required>{{ $recipe->ingredients }}</textarea>
+                placeholder="Вода – 1,5-2 л.,
+свинина або яловичина на кістці – 400 г,
+картопля – 4 шт. (середні),
+буряк – 2 шт. (невеликі),
+морква – 1 шт.,
+цибуля – 3 шт. (середні),
+капуста білокачанна свіжа – 300 г,
+томатна паста – 2 ст. л.,
+соняшникова олія – 4-5 ст. л.,
+лимонна кислота – дрібка,
+сіль, лавровий лист, зелень – за смаком.">{{ $recipe->ingredients }}</textarea>
             @error('ingredients')
                 <span class="mt-4 text-red-500 text-sm">{{ $message }}</span>
             @enderror
@@ -47,8 +57,7 @@
             <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Опис процесу
                 приготування</label>
             <textarea id="description" name="description" rows="5"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                required>{{ $recipe->description }}</textarea>
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">{{ $recipe->description }}</textarea>
             @error('description')
                 <span class="mt-4 text-red-500 text-sm">{{ $message }}</span>
             @enderror
